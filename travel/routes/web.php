@@ -2,6 +2,7 @@
 
 use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\CountryController as C;
+use App\Http\Controllers\HotelController as H;
 /*
 |--------------------------------------------------------------------------
 | Web Routes
@@ -26,9 +27,17 @@ Route::prefix('countries')->name('countries-')->group(function () {
     Route::get('/edit/{country}', [C::class, 'edit'])->name('edit');
     Route::put('/edit/{country}', [C::class, 'update'])->name('update');
     Route::delete('/delete/{country}', [C::class, 'destroy'])->name('delete');
-    
-    
     });
+
+    Route::prefix('hotels')->name('hotels-')->group(function () {
+        Route::get('/', [H::class, 'index'])->name('index');
+        Route::get('/create', [H::class, 'create'])->name('create');
+        Route::post('/create', [H::class, 'store'])->name('store');
+        Route::get('/{hotel}', [H::class, 'show'])->name('show');
+        Route::get('/edit/{hotel}', [H::class, 'edit'])->name('edit');
+        Route::put('/edit/{hotel}', [H::class, 'update'])->name('update');
+        Route::delete('/delete/{hotel}', [H::class, 'destroy'])->name('delete');
+        });
 
 
 Auth::routes();

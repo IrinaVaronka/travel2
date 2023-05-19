@@ -1,66 +1,80 @@
 <?php
 
 namespace App\Http\Controllers;
-
-use App\Http\Requests\StoreHotelRequest;
-use App\Http\Requests\UpdateHotelRequest;
+use App\Models\Country;
 use App\Models\Hotel;
+use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Validator;
 
 class HotelController extends Controller
 {
-    /**
-     * Display a listing of the resource.
-     */
+    
     public function index()
     {
-        //
+        $hotels = Hotel::all();
+            
+        return view('back.hotels.index', [
+            'hotels' => $hotels
+        ]);
     }
 
-    /**
-     * Show the form for creating a new resource.
-     */
+    
     public function create()
     {
-        //
+        $countries = Country::all();
+        return view('back.hotels.create', [
+            'countries' => $countries
+        ]);
     }
 
-    /**
-     * Store a newly created resource in storage.
-     */
-    public function store(StoreHotelRequest $request)
+
+    public function store(Request $request)
     {
-        //
-    }
 
-    /**
-     * Display the specified resource.
-     */
-    public function show(Hotel $hotel)
-    {
-        //
-    }
+          
 
-    /**
-     * Show the form for editing the specified resource.
-     */
+    //   dump($request->country);
+    //   die;
+        Hotel::create([
+            'title' => $request->title,
+            'country' => $request->country,
+            'price' => $request->price,
+            'days' => $request->days,
+            'photo' => $name ?? null,
+           
+        ]);
+
+        return redirect()->route('hotels-index');
+    
+}
+
+
+
+    
     public function edit(Hotel $hotel)
     {
-        //
+        return view('back.hotels.edit', [
+            'hotel' => $hotel
+        ]);
     }
 
-    /**
-     * Update the specified resource in storage.
-     */
-    public function update(UpdateHotelRequest $request, Hotel $hotel)
+    
+    public function update(Request $request, Hotel $hotel)
     {
-        //
+        $hotel->title = $request->title;
+        $hotel->country = $request->country;
+        $hotel->price = $request->price;
+        $hotel->days = $request->days;
+        $hotel->photo = $name ?? null;
+        $hotel->save();
+        return redirect()
+            ->route('hotels-index');
     }
 
-    /**
-     * Remove the specified resource from storage.
-     */
+   
     public function destroy(Hotel $hotel)
     {
-        //
+        $country->delete();
+        return redirect()->route('hotels-index');
     }
 }

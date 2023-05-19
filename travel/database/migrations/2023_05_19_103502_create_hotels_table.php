@@ -13,6 +13,12 @@ return new class extends Migration
     {
         Schema::create('hotels', function (Blueprint $table) {
             $table->id();
+            $table->string('title', 30);
+            $table->decimal('price', 6)->unsigned();
+            $table->string('photo', 200)->nullable()->default(null);
+            $table->decimal('days', 30)->unsigned();
+            $table->string('country', 30);
+            $table->foreign('country')->references('title')->on('countries');
             $table->timestamps();
         });
     }
