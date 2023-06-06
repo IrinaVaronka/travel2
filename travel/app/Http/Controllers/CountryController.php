@@ -8,12 +8,25 @@ use Illuminate\Http\Request;
 class CountryController extends Controller
 {
    
-    public function index()
+    public function index(Country $countries, Request $request)
     {
+    
+        $countries = match($request->sort ?? '') {
+            'title_asc' => Country::orderBy('title'),
+            'title_desc' => Country::orderBy('title', 'desc'),
+            default => Country::where('id', '!=', 0) 
+        };
+
+        $countries = $countries->get();
+        
+
         $countries = Country::all();
 
         return view('back.countries.index', [
             'countries' => $countries,
+            'sortSelect' => Country::SORT,
+            'sort' => isset(Country::SORT[$request->sort]) ? $request->sort : '',
+            
         ]);
     }
 
